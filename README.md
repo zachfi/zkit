@@ -1,1 +1,1 @@
-# go-zkit
+# zkit
