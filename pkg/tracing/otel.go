@@ -2,11 +2,10 @@ package tracing
 
 import (
 	"context"
+	"log/slog"
 	"os"
 	"time"
 
-	"github.com/go-kit/log"
-	"github.com/go-kit/log/level"
 	"github.com/pkg/errors"
 
 	"go.opentelemetry.io/otel"
@@ -18,12 +17,12 @@ import (
 	"google.golang.org/grpc"
 )
 
-func InstallOpenTelemetryTracer(config *Config, logger log.Logger, appName, version string) (func(), error) {
+func InstallOpenTelemetryTracer(config *Config, logger *slog.Logger, appName, version string) (func(), error) {
 	if config.OtelEndpoint == "" {
 		return func() {}, nil
 	}
 
-	_ = level.Info(logger).Log("msg", "initialising OpenTelemetry tracer")
+	logger.Info("msg", "initialising OpenTelemetry tracer")
 
 	ctx := context.Background()
 
@@ -69,7 +68,7 @@ func InstallOpenTelemetryTracer(config *Config, logger log.Logger, appName, vers
 		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 		defer cancel()
 		if err := tracerProvider.Shutdown(ctx); err != nil {
-			_ = level.Error(logger).Log("msg", "OpenTelemetry trace provider failed to shutdown", "err", err)
+			logger.Error("OpenTelemetry trace provider failed to shutdown", "err", err)
 			os.Exit(1)
 		}
 	}

@@ -1,9 +1,8 @@
 module github.com/zachfi/zkit
 
-go 1.19
+go 1.21
 
 require (
-	github.com/go-kit/log v0.2.1
 	github.com/pkg/errors v0.9.1
 	go.opentelemetry.io/otel v1.12.0
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc v1.12.0
@@ -13,7 +12,6 @@ require (
 
 require (
 	github.com/cenkalti/backoff/v4 v4.2.0 // indirect
-	github.com/go-logfmt/logfmt v0.5.1 // indirect
 	github.com/go-logr/logr v1.2.3 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
