@@ -22,7 +22,7 @@ func InstallOpenTelemetryTracer(config *Config, logger *slog.Logger, appName, ve
 		return func() {}, nil
 	}
 
-	logger.Info("msg", "initialising OpenTelemetry tracer")
+	logger.Info("initialising OpenTelemetry tracer")
 
 	ctx := context.Background()
 
