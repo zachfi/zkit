@@ -38,7 +38,7 @@ func InstallOpenTelemetryTracer(config *Config, logger *slog.Logger, appName, ve
 		return nil, errors.Wrap(err, "failed to initialize trace resuorce")
 	}
 
-	conn, err := grpc.DialContext(ctx, config.OtelEndpoint, grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithBlock())
+	conn, err := grpc.NewClient(config.OtelEndpoint, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to dial otel grpc")
 	}
