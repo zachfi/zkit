@@ -1,0 +1,20 @@
+---
+depends_on: []
+kind: pipeline
+name: lint
+steps:
+- commands:
+  - make lint
+  image: zachfi/build-image
+  name: lint
+  pull: always
+trigger:
+  ref:
+  - refs/heads/main
+  - refs/heads/dependabot/**
+  - refs/pull/*/head
+---
+kind: signature
+hmac: bcbaeeb0fef756bd8e6c0af76da0c919a221416f575934700c36f4731e658bf9
+
+...
