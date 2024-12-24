@@ -1,7 +1,8 @@
 module github.com/zachfi/zkit
 
-go 1.22
-toolchain go1.22.10
+go 1.22.7
+
+toolchain go1.23.4
 
 require (
 	github.com/pkg/errors v0.9.1
