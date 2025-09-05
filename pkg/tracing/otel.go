@@ -2,12 +2,14 @@ package tracing
 
 import (
 	"context"
+	"fmt"
 	"log/slog"
 	"os"
 	"time"
 
 	"github.com/pkg/errors"
 
+	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc"
 	"go.opentelemetry.io/otel/propagation"
@@ -39,7 +41,19 @@ func InstallOpenTelemetryTracer(config *Config, logger *slog.Logger, appName, ve
 		return nil, errors.Wrap(err, "failed to initialize trace resource")
 	}
 
-	conn, err := grpc.NewClient(config.OtelEndpoint, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	opts := []grpc.DialOption{
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
+		grpc.WithStatsHandler(otelgrpc.NewClientHandler()),
+	}
+
+	instrumentationOpts, err := config.GRPCClientConfig.DialOption(nil, nil, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get dial options: %w", err)
+	}
+
+	opts = append(opts, instrumentationOpts...)
+
+	conn, err := grpc.NewClient(config.OtelEndpoint, opts...)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to dial otel grpc")
 	}
