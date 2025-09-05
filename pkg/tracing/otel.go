@@ -33,9 +33,10 @@ func InstallOpenTelemetryTracer(config *Config, logger *slog.Logger, appName, ve
 			semconv.ServiceVersionKey.String(version),
 		),
 		resource.WithHost(),
+		resource.WithTelemetrySDK(),
 	)
 	if err != nil {
-		return nil, errors.Wrap(err, "failed to initialize trace resuorce")
+		return nil, errors.Wrap(err, "failed to initialize trace resource")
 	}
 
 	conn, err := grpc.NewClient(config.OtelEndpoint, grpc.WithTransportCredentials(insecure.NewCredentials()))
